@@ -4,6 +4,7 @@ GCC=${TOOLCHAIN}/aarch64-elf-gcc
 OBJCOPY=${TOOLCHAIN}/aarch64-elf-objcopy
 
 build:
+	(ls ${TOOLCHAIN}) || (tar -xJf ./toolchain/gcc-linaro-7.2.1-2017.11-x86_64_aarch64-elf.tar.xz -C ./toolchain/)
 	${GCC} -s -nostdlib -nostartfiles -ffreestanding -std=gnu99 -c *.c *.s
 	${GCC} -T linker.ld -o kernel.elf -ffreestanding *.o -nostdlib -lgcc
 	${OBJCOPY} -O binary kernel.elf kernel.bin
