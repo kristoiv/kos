@@ -6,7 +6,7 @@ SECTIONS
 	.text : { *(.text) }
 	.data : { *(.data) }
 	.bss : { *(.bss COMMON) }
-	. = ALIGN(8);
-	. = . + 0x1000;
+	. = ALIGN(16);
+	. = . + 0x100000;
 	stack_top = .;
 }
