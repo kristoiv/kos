@@ -37,12 +37,6 @@ char *itoh(int i, char *buf) {
 }
 
 void ksprintf(char *buf, const char *format, ...) {
-    kputc('A');
-    // __builtin_va_list argp;
-    // __builtin_va_start(argp, format);
-    // __builtin_va_end(argp);
-    kputc('B');
-    /*
     int 					i;
     const char 				*p;
     char 					*s;
@@ -53,10 +47,8 @@ void ksprintf(char *buf, const char *format, ...) {
     __builtin_va_start(argp, format);
 
     x = 0;
-    kputc('B');
 
     for (p = format; *p != '\0'; p++) {
-        kputc(*p);
         if (*p == '\\') {
             switch (*++p) {
             case 'n':
@@ -102,7 +94,6 @@ void ksprintf(char *buf, const char *format, ...) {
 
     __builtin_va_end(argp);
     buf[x] = 0;
-    */
 }
 
 #endif
