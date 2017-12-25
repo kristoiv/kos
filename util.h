@@ -1,6 +1,7 @@
 #ifndef __UTIL_H
 #define __UTIL_H
 
+#include <stdbool.h>
 #include <stdarg.h>
 
 #ifdef BOARD_QCOM410C
@@ -34,6 +35,56 @@ char *itoh(int i, char *buf) {
 	}
 	buf[z] = 0;
 	return buf;
+}
+
+void reverse(char str[], int length) {
+    int start = 0;
+    int end = length -1;
+    char temp;
+    while (start < end) {
+        temp = *(str+start);
+        *(str+start) = *(str+end);
+        *(str+end) = temp;
+        //swap(*(str+start), *(str+end));
+        start++;
+        end--;
+    }
+}
+
+char *itoa(int num, char *str, int base) {
+    int i = 0;
+    bool isNegative = false;
+
+    /* Handle 0 explicitely, otherwise empty string is printed for 0 */
+    if (num == 0) {
+        str[i++] = '0';
+        str[i] = '\0';
+        return str;
+    }
+
+    // In standard itoa(), negative numbers are handled only with
+    // base 10. Otherwise numbers are considered unsigned.
+    if (num < 0 && base == 10) {
+        isNegative = true;
+        num = -num;
+    }
+
+    // Process individual digits
+    while (num != 0) {
+        int rem = num % base;
+        str[i++] = (rem > 9)? (rem-10) + 'a' : rem + '0';
+        num = num/base;
+    }
+
+    // If number is negative, append '-'
+    if (isNegative) str[i++] = '-';
+
+    str[i] = '\0'; // Append string terminator
+
+    // Reverse the string
+    reverse(str, i);
+
+    return str;
 }
 
 void ksprintf(char *buf, const char *format, ...) {
@@ -84,6 +135,16 @@ void ksprintf(char *buf, const char *format, ...) {
             s = itoh(i, fmtbuf);
             for (y = 0; s[y]; ++y) {
                 buf[x++] = s[y];
+            }
+            break;
+        case 'd':
+            i = __builtin_va_arg(argp, int);
+            char temp[33]; // sizeof(int)*8 + 1 - Should be 33 bytes for 32bit int ref.: http://www.cplusplus.com/reference/cstdlib/itoa/
+            itoa(i, temp, 10);
+            s = temp;
+            while (*s != '\0') {
+                buf[x++] = *s;
+                s++;
             }
             break;
         case '%':
