@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <stdarg.h>
 
+#define NULL 0
+
 #ifdef BOARD_QCOM410C
     #include "boards/qcom410c/board.h"
 #else
@@ -87,15 +89,12 @@ char *itoa(int num, char *str, int base) {
     return str;
 }
 
-void ksprintf(char *buf, const char *format, ...) {
+void _kprintf(char *buf, const char *format, va_list *argp) {
     int 					i;
     const char 				*p;
     char 					*s;
     int						x, y;
     char 					fmtbuf[256];
-
-    __builtin_va_list		argp;
-    __builtin_va_start(argp, format);
 
     x = 0;
 
@@ -103,10 +102,18 @@ void ksprintf(char *buf, const char *format, ...) {
         if (*p == '\\') {
             switch (*++p) {
             case 'n':
-                buf[x++] = '\n';
+                if (buf == NULL) {
+                    kputc('\n');
+                }else{
+                    buf[x++] = '\n';
+                }
                 break;
             case 'r':
-                buf[x++] = '\r';
+                if (buf == NULL) {
+                    kputc('\r');
+                }else{
+                    buf[x++] = '\r';
+                }
                 break;
             default:
                 break;
@@ -115,46 +122,85 @@ void ksprintf(char *buf, const char *format, ...) {
         }
 
         if(*p != '%') {
-            buf[x++] = *p;
+            if (buf == NULL) {
+                kputc(*p);
+            }else{
+                buf[x++] = *p;
+            }
             continue;
         }
 
         switch(*++p) {
         case 'c':
-            i = __builtin_va_arg(argp, int);
-            buf[x++] = i;
+            i = __builtin_va_arg(*argp, int);
+            if (buf == NULL) {
+                kputc(i);
+            }else{
+                buf[x++] = i;
+            }
             break;
         case 's':
-            s = __builtin_va_arg(argp, char *);
+            s = __builtin_va_arg(*argp, char *);
             for (y = 0; s[y]; ++y) {
-                buf[x++] = s[y];
+                if (buf == NULL) {
+                    kputc(s[y]);
+                }else{
+                    buf[x++] = s[y];
+                }
             }
             break;
         case 'x':
-            i = __builtin_va_arg(argp, int);
+            i = __builtin_va_arg(*argp, int);
             s = itoh(i, fmtbuf);
             for (y = 0; s[y]; ++y) {
-                buf[x++] = s[y];
+                if (buf == NULL) {
+                    kputc(s[y]);
+                }else{
+                    buf[x++] = s[y];
+                }
             }
             break;
         case 'd':
-            i = __builtin_va_arg(argp, int);
+            i = __builtin_va_arg(*argp, int);
             char temp[33]; // sizeof(int)*8 + 1 - Should be 33 bytes for 32bit int ref.: http://www.cplusplus.com/reference/cstdlib/itoa/
             itoa(i, temp, 10);
             s = temp;
             while (*s != '\0') {
-                buf[x++] = *s;
+                if (buf == NULL) {
+                    kputc(*s);
+                }else{
+                    buf[x++] = *s;
+                }
                 s++;
             }
             break;
         case '%':
-            buf[x++] = '%';
+            if (buf == NULL) {
+                kputc('%');
+            }else{
+                buf[x++] = '%';
+            }
             break;
         }
     }
 
+    if (buf != NULL) {
+        buf[x] = 0;
+    }
+}
+
+void kprintf(const char *format, ...) {
+    __builtin_va_list argp;
+    __builtin_va_start(argp, format);
+    _kprintf(NULL, format, &argp);
     __builtin_va_end(argp);
-    buf[x] = 0;
+}
+
+void ksprintf(char *buf, const char *format, ...) {
+    __builtin_va_list argp;
+    __builtin_va_start(argp, format);
+    _kprintf(buf, format, &argp);
+    __builtin_va_end(argp);
 }
 
 #endif
