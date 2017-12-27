@@ -6,8 +6,8 @@ GDB=${TOOLCHAIN}/aarch64-elf-gdb
 
 build:
 	(ls ${TOOLCHAIN}) > /dev/null || (tar -xJf ./toolchain/gcc-linaro-7.2.1-2017.11-x86_64_aarch64-elf.tar.xz -C ./toolchain/)
-	${GCC} -s -nostdlib -mcpu=cortex-a53 -nostartfiles -ffreestanding -std=gnu99 -g -c *.c *.s
-	${GCC} -T linker.ld -mcpu=cortex-a53 -o kernel.elf -ffreestanding -g *.o -nostdlib -lgcc
+	${GCC} -s -nostdlib -nostartfiles -ffreestanding -std=gnu99 -g -c *.c *.s
+	${GCC} -T linker.ld -o kernel.elf -ffreestanding -g *.o -nostdlib -lgcc
 	${OBJCOPY} -O binary kernel.elf kernel.bin
 
 build_container:
@@ -22,7 +22,7 @@ emu_container:
 	docker run -it -v `pwd`:/mnt --rm kos-factory:latest make emu
 
 emud:
-	qemu-system-aarch64 -M virt -cpu cortex-a57 -nographic -kernel kernel.elf -s -S
+	qemu-system-aarch64 -M virt -cpu cortex-a57 -nographic -kernel kernel.elf -s -S # -d int
 
 emud_container:
 	(docker image ls kos-factory | grep kos-factory) || (docker build -t kos-factory .)
