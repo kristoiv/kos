@@ -11,5 +11,4 @@ _RESET:
 	ldr x30, =stack_top
 	mov sp, x30
 	bl kmain
-	bl exceptionHandlerSynch
 	b .
