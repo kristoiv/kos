@@ -4,20 +4,21 @@
 extern void enable_exceptions();
 
 void kmain() {
-    kprintf("Welcome to kos\n---------------\n");
+    kprintf("Welcome to kos (Kristoffer OS), a project to learn a bit of aarch64 low-level details.\n");
+    kprintf("Compiled at %s\n", COMPILETIME);
+    kprintln("");
 
-    // TODO: installExceptionHandlers();
+    kprintf("Testing a SVC interrupt: ");
+    enable_exceptions();
+    asm("svc 0");
+
     // TODO: Paged Memory mapping
     // TODO: Boot core 2, 3, 4?
     // TODO: Boot screen? Direct framebuffer?
     // TODO: Threads?
     // TODO: Monolithic or microkernel?
 
-    kprintf("Testing a SVC interrupt: ");
-    enable_exceptions();
-    asm("svc 0");
-
-    kprintf("---------------\nkos exiting\n");
+    kpanic("kernel panic: kmain ended.");
 }
 
 void kinterruptsvc() {

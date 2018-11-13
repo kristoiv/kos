@@ -243,4 +243,15 @@ void ksprintf(char *buf, const char *format, ...) {
     __builtin_va_end(argp);
 }
 
+void kprintln(const char *content) {
+    kputs(content);
+    kputc('\n');
+}
+
+void kpanic(const char *content) {
+    kputc('\n');
+    kputs(content);
+    kputc('\n');
+}
+
 #endif
