@@ -1,10 +1,9 @@
-
 _entry:
 	b _main
+	.balign 128
 
 .global _exception_vector_table
 _exception_vector_table:
-	.balign 128
 	/* Current EL with SP0 */
 	b . /* Synchronous */
 	b .
@@ -102,7 +101,7 @@ _exception_vector_table:
 	b .
 	b .
 	b .
-	b interrupt /* SError/vSError */
+	b . /* SError/vSError */
 	b .
 	b .
 	b .
@@ -136,7 +135,7 @@ _exception_vector_table:
 	b .
 
 	/* Current EL with SPn */
-	b . /* Synchronous */
+	b interrupt /* Synchronous */
 	b .
 	b .
 	b .
@@ -559,52 +558,17 @@ enable_exceptions:
     msr daifclr, #2
 	ret
 
-/*
-	b _main
-	b .
-	b .
-	b .
-	b .
-	b .
-	b .
-	b .
-	.balign 128
-	b .
-	.balign 128
-	b .
-	.balign 128
-	b .
-	.balign 128
-	b .
-	.balign 128
-	b _irq_handler
-*/
-
 interrupt:
-    stp x0,x1,[sp,#-16]!
-    stp x2,x3,[sp,#-16]!
-    stp x4,x5,[sp,#-16]!
-    stp x6,x7,[sp,#-16]!
-    stp x8,x9,[sp,#-16]!
-    stp x10,x11,[sp,#-16]!
-    stp x12,x13,[sp,#-16]!
-    stp x14,x15,[sp,#-16]!
-    stp x16,x17,[sp,#-16]!
-    stp x18,x19,[sp,#-16]!
+	mrs	x1, esr_el1		// read the syndrome register
+	lsr	x24, x1, #26	// exception class
 
-	// mrs x0,esr_el1
-	bl kinterrupt
-    msr daifclr, #2 // Clear IRQ bit
+	cmp x24, #0x15 		// Exception class equal to SVC64?
+	b.eq interrupt_svc
 
-    ldp x18,x19,[sp],#16
-    ldp x16,x17,[sp],#16
-    ldp x14,x15,[sp],#16
-    ldp x12,x13,[sp],#16
-    ldp x10,x11,[sp],#16
-    ldp x8,x9,[sp],#16
-    ldp x6,x7,[sp],#16
-    ldp x4,x5,[sp],#16
-    ldp x2,x3,[sp],#16
-    ldp x0,x1,[sp],#16
+interrupt_unknown:
+	bl kinterruptunknown
+	eret
 
-    eret
+interrupt_svc:
+	bl kinterruptsvc
+	eret

@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include <stdarg.h>
+#include <stdint.h>
 
 #define NULL 0
 
@@ -89,8 +90,34 @@ char *itoa(int num, char *str, int base) {
     return str;
 }
 
+char *utoa(uint32_t num, char *str, uint32_t base) {
+    int i = 0;
+
+    /* Handle 0 explicitely, otherwise empty string is printed for 0 */
+    if (num == 0) {
+        str[i++] = '0';
+        str[i] = '\0';
+        return str;
+    }
+
+    // Process individual digits
+    while (num != 0) {
+        uint32_t rem = num % base;
+        str[i++] = (rem > 9)? (rem-10) + 'a' : rem + '0';
+        num = num/base;
+    }
+
+    str[i] = '\0'; // Append string terminator
+
+    // Reverse the string
+    reverse(str, i);
+
+    return str;
+}
+
 void _kprintf(char *buf, const char *format, va_list *argp) {
     int 					i;
+    uint32_t 				u;
     const char 				*p;
     char 					*s;
     int						x, y;
@@ -164,6 +191,19 @@ void _kprintf(char *buf, const char *format, va_list *argp) {
             i = __builtin_va_arg(*argp, int);
             char temp[33]; // sizeof(int)*8 + 1 - Should be 33 bytes for 32bit int ref.: http://www.cplusplus.com/reference/cstdlib/itoa/
             itoa(i, temp, 10);
+            s = temp;
+            while (*s != '\0') {
+                if (buf == NULL) {
+                    kputc(*s);
+                }else{
+                    buf[x++] = *s;
+                }
+                s++;
+            }
+            break;
+        case 'u':
+            u = __builtin_va_arg(*argp, uint32_t);
+            utoa(u, temp, 10);
             s = temp;
             while (*s != '\0') {
                 if (buf == NULL) {

@@ -13,13 +13,17 @@ void kmain() {
     // TODO: Threads?
     // TODO: Monolithic or microkernel?
 
-    kprintf("Testing a swi: ");
+    kprintf("Testing a SVC interrupt: ");
     enable_exceptions();
     asm("svc 0");
 
     kprintf("---------------\nkos exiting\n");
 }
 
-void kinterrupt() {
-    kprintf("Interrupt called!\n");
+void kinterruptsvc() {
+    kprintf("Supervisor interrupt called. Ignoring...\n");
+}
+
+void kinterruptunknown() {
+    kprintf("Unknown interrupt called. Ignoring...\n");
 }
