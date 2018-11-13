@@ -1,15 +1,12 @@
 #include "util.h"
 #include <stdint.h>
 
-extern void enable_exceptions();
-
 void kmain() {
     kprintf("Welcome to kos (Kristoffer OS), a project to learn a bit of aarch64 low-level details.\n");
     kprintf("Compiled at %s\n", COMPILETIME);
     kprintln("");
 
     kprintf("Testing a SVC interrupt: ");
-    enable_exceptions();
     asm("svc 0");
 
     // TODO: Paged Memory mapping
