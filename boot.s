@@ -1,3 +1,530 @@
+
+_entry:
+	b _main
+
+.global _exception_vector_table
+_exception_vector_table:
+	.balign 128
+	/* Current EL with SP0 */
+	b . /* Synchronous */
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .  /* IRQ/vIRQ */
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .  /* FIQ/vFIQ */
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b interrupt /* SError/vSError */
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+
+	/* Current EL with SPn */
+	b . /* Synchronous */
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .  /* IRQ/vIRQ */
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .  /* FIQ/vFIQ */
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b . /* SError/vSError */
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+
+	/* Lower EL with Aarch64 */
+	b . /* Synchronous */
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .  /* IRQ/vIRQ */
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .  /* FIQ/vFIQ */
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b . /* SError/vSError */
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+
+	/* Lower EL with Aarch32 */
+	b . /* Synchronous */
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .  /* IRQ/vIRQ */
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .  /* FIQ/vFIQ */
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b . /* SError/vSError */
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+	b .
+
 .global _main
 _main:
 	// Enable advanced SIMD instructions (required for variadic functions): set CPACR_EL1 = CPACR_EL1|1671168;
@@ -16,15 +543,17 @@ _main:
 .global enable_exceptions
 enable_exceptions:
     // Setup EL1 (OS execution ring) exception vector table
-    ldr x1,=exception_vector_table
-    msr vbar_el1,x1
+    ldr x1, =_exception_vector_table
+    msr vbar_el1, x1
 
     // Setup secure zones (not sure how this works at the moment)
+	/*
     mrs x0, scr_el3
     orr x0, x0, #8
     orr x0, x0, #4
     orr x0, x0, #2
     msr scr_el3, x0
+	*/
 
     // Clear/enable irq bit in PSTATE
     msr daifclr, #2
@@ -51,48 +580,6 @@ enable_exceptions:
 	b _irq_handler
 */
 
-.global exception_vector_table
-exception_vector_table:
-	/* Current EL with SP0 */
-	b interrupt /* Synchronous */
-	.balign 128
-	b interrupt  /* IRQ/vIRQ */
-	.balign 128
-	b interrupt  /* FIQ/vFIQ */
-	.balign 128
-	b interrupt /* SError/vSError */
-	.balign 128
-
-	/* Current EL with SPn */
-	b interrupt /* Synchronous */
-	.balign 128
-	b interrupt  /* IRQ/vIRQ */
-	.balign 128
-	b interrupt  /* FIQ/vFIQ */
-	.balign 128
-	b interrupt /* SError/vSError */
-	.balign 128
-
-	/* Lower EL with Aarch64 */
-	b interrupt /* Synchronous */
-	.balign 128
-	b interrupt  /* IRQ/vIRQ */
-	.balign 128
-	b interrupt  /* FIQ/vFIQ */
-	.balign 128
-	b interrupt /* SError/vSError */
-	.balign 128
-
-	/* Lower EL with Aarch32 */
-	b interrupt /* Synchronous */
-	.balign 128
-	b interrupt  /* IRQ/vIRQ */
-	.balign 128
-	b interrupt  /* FIQ/vFIQ */
-	.balign 128
-	b interrupt /* SError/vSError */
-	.balign 128
-
 interrupt:
     stp x0,x1,[sp,#-16]!
     stp x2,x3,[sp,#-16]!
@@ -106,7 +593,7 @@ interrupt:
     stp x18,x19,[sp,#-16]!
 
 	// mrs x0,esr_el1
-	b kinterrupt
+	bl kinterrupt
     msr daifclr, #2 // Clear IRQ bit
 
     ldp x18,x19,[sp],#16
