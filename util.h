@@ -252,6 +252,7 @@ void kpanic(const char *content) {
     kputc('\n');
     kputs(content);
     kputc('\n');
+    for (;;) {}
 }
 
 #endif

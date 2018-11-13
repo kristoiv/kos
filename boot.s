@@ -1,3 +1,4 @@
+
 main:
 	// Enable advanced SIMD instructions (required for variadic functions): set CPACR_EL1 = CPACR_EL1|1671168;
 	mrs x0, cpacr_el1
@@ -24,11 +25,15 @@ interrupt:
 	b.eq interrupt_svc
 
 interrupt_unknown:
-	bl kinterruptunknown
+	bl kInterruptUnknown
 	eret
 
 interrupt_svc:
-	bl kinterruptsvc
+	bl kInterruptSvc
+	eret
+
+interrupt_scheduler:
+	bl kInterruptPreemptiveScheduling
 	eret
 
 /*.balign 128*/
