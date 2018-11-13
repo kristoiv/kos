@@ -8,6 +8,7 @@ void kmain() {
     kprintln("");
 
     // Test software interrupt (supervisor interrupt)
+    // kprintf("Interrupting: ");
     // asm("svc 0");
 
     // Start timer for preemptive scheduling
