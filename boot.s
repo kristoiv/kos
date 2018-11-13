@@ -10,18 +10,6 @@ main:
     ldr x1, =exception_vector_table
     msr vbar_el1, x1
 
-    // Setup secure zones (not sure how this works at the moment)
-	/*
-    mrs x0, scr_el3
-    orr x0, x0, #8
-    orr x0, x0, #4
-    orr x0, x0, #2
-    msr scr_el3, x0
-	*/
-
-    // Clear/enable irq bit in PSTATE
-    // msr daifclr, #2
-
 	// Setup stack, jump to kmain in c-world
 	ldr x30, =stack_top
 	mov sp, x30
