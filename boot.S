@@ -36,7 +36,6 @@ interrupt_scheduler:
 	bl kInterruptPreemptiveScheduling
 	eret
 
-/*.balign 128*/
 .balign 32
 exception_vector_table:
 	/* Current EL with SP0 */

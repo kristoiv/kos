@@ -7,8 +7,8 @@ GDB=${TOOLCHAIN}/aarch64-elf-gdb
 
 build:
 	@(ls ${TOOLCHAIN}) > /dev/null || (tar -xJf ./toolchain/gcc-linaro-7.2.1-2017.11-x86_64_aarch64-elf.tar.xz -C ./toolchain/)
-	@${GCC} -s -nostdlib -nostartfiles -ffreestanding -std=gnu99 -g -c -DCOMPILETIME="\"`date`\"" *.c *.S
-	@${GCC} -T linker.ld -o kernel.elf -ffreestanding -Wl,--build-id=none -g *.o -nostdlib -lgcc
+	@${GCC} -s -nostdlib -nostartfiles -ffreestanding -std=gnu99 -g -c -O0 -fpic -DCOMPILETIME="\"`date`\"" *.c *.S
+	@${GCC} -T linker.ld -o kernel.elf -ffreestanding -Wl,--build-id=none -g -O0 -fpic *.o -nostdlib -lgcc
 	@${OBJDUMP} -D kernel.elf > kernel.list
 	@${OBJCOPY} -O binary kernel.elf kernel.bin
 
