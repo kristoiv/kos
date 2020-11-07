@@ -9,7 +9,8 @@ void kmain() {
 
     // Test software interrupt (supervisor interrupt)
     // kprintf("Interrupting: ");
-    // asm("svc 0");
+    asm("svc 0");
+    asm("svc 0");
 
     // Start timer for preemptive scheduling
     // TODO
@@ -23,13 +24,30 @@ void kmain() {
     kpanic("kernel panic: kmain ended.");
 }
 
-void kInterruptPreemptiveScheduling() {
+void kInterruptCurrentElSp0() {
+    kprintf("kInterruptCurrentElSp0. Ignoring...\n");
 }
 
-void kInterruptSvc() {
-    kprintf("Supervisor interrupt called. Ignoring...\n");
+void kInterruptCurrentElSp0Unhandled() {
+    kprintf("kInterruptCurrentElSp0Unhandled. Ignoring...\n");
 }
 
-void kInterruptUnknown() {
-    kpanic("Unknown interrupt called.");
+void kInterruptCurrentEl() {
+    kprintf("kInterruptCurrentEl. Ignoring...\n");
+}
+
+void kInterruptCurrentElUnhandled() {
+    kprintf("kInterruptCurrentElUnhandled. Ignoring...\n");
+}
+
+void kInterruptLowerEl() {
+    kprintf("kInterruptLowerEl. Ignoring...\n");
+}
+
+void kInterruptLowerElUnhandled() {
+    kprintf("kInterruptLowerElUnhandled. Ignoring...\n");
+}
+
+void kInterruptLowerElUnhandledAarch32() {
+    kprintf("kInterruptLowerElUnhandledAarch32. Ignoring...\n");
 }

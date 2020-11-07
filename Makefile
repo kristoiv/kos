@@ -17,21 +17,21 @@ build_container:
 	@docker run -it -v `pwd`:/mnt --rm kos-factory:latest make build
 
 emu:
-	@qemu-system-aarch64 -M virt -cpu cortex-a57 -m 4000 -nographic -kernel kernel.elf
+	@qemu-system-aarch64 -M virt -cpu cortex-a57 -smp 4 -m 4000 -nographic -kernel kernel.elf
 
 emu_container:
 	@(docker image ls kos-factory | grep kos-factory) || (docker build -t kos-factory .)
 	@docker run -it -v `pwd`:/mnt --rm kos-factory:latest make emu
 
 emud:
-	@qemu-system-aarch64 -M virt -cpu cortex-a57 -m 4000 -nographic -kernel kernel.elf -s -S # -d int
+	@qemu-system-aarch64 -M virt -cpu cortex-a57 -smp 4 -m 4000 -nographic -kernel kernel.elf -s -S # -d int
 
 emud_container:
 	@(docker image ls kos-factory | grep kos-factory) || (docker build -t kos-factory .)
 	@docker run -it -v `pwd`:/mnt --rm kos-factory:latest make emud
 
 gdb_emud:
-	gdb -tui -ex "target remote :1234" -ex "layout split" kernel.elf
+	gdb-multiarch -tui -ex "target remote :1234" -ex "layout split" kernel.elf
 
 GDB_CONTAINER := $(shell docker ps | grep kos-factory | awk '{print $$1}')
 gdb_emud_container:
