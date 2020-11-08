@@ -4,14 +4,14 @@
 main:
 	// Setup EL1 (OS execution ring) exception vector table
     ldr x1, =exception_vector_table
-    msr vbar_el1, x1
+    msr vbar_el3, x1
 
 	// Asynchronous exceptions routing
-	// MRS X0, SCR_EL3
-	// ORR X0, X0, #(1<<3) // The EA bit.
-	// ORR X0, X0, #(1<<1) // The IRQ bit.
-	// ORR X0, X0, #(1<<2) // The FIQ bit.
-	// MSR SCR_EL3, X0
+	MRS X0, SCR_EL3
+	ORR X0, X0, #(1<<3) // The EA bit.
+	ORR X0, X0, #(1<<1) // The IRQ bit.
+	ORR X0, X0, #(1<<2) // The FIQ bit.
+	MSR SCR_EL3, X0
 
 	// Enable SError, IRQ and FIQ (fix PSTATE for EL1)
 	MSR DAIFClr, #0x7
@@ -52,8 +52,8 @@ main:
 	MOV X29, XZR
 	MOV X30, XZR
 
-	// MSR CPTR_EL3, XZR
-	// MSR CPTR_EL2, XZR
+	MSR CPTR_EL3, XZR
+	MSR CPTR_EL2, XZR
 
 	// Enable advanced SIMD instructions (required for variadic functions): set CPACR_EL1 = CPACR_EL1|1671168;
 	mrs x0, cpacr_el1
@@ -110,9 +110,9 @@ main:
 
 	// Initializing system control registers
 	// Some system control registers do not have architectural reset values. Therefore, you must initialize the registers based on your software requirements before using them.
-	// MSR HCR_EL2, XZR
+	MSR HCR_EL2, XZR
 	LDR X1, =0x30C50838
-	// MSR SCTLR_EL2, X1
+	MSR SCTLR_EL2, X1
 	MSR SCTLR_EL1, X1
 
     // Jump to kmain in c-world
